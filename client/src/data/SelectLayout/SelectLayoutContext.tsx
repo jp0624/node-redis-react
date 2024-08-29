@@ -29,7 +29,8 @@ export const LayoutProvider: React.FC<{ children: ReactNode }> = ({
 				if (!response.ok) {
 					throw new Error('Network response was not ok')
 				}
-				setLayout(await response.json())
+				const newLayout = await response.json()
+				setLayout(newLayout.layout)
 			} catch (error) {
 				console.log(error instanceof Error ? error.message : 'Unknown error')
 			}

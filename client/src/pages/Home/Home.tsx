@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useLayout } from '../../data/SelectLayout/SelectLayoutContext'
 
 const Home = () => {
-	const [layout, setLayout] = useState<number>()
+	const { layout } = useLayout()
+	const [newLayout, setNewLayout] = useState<number>()
 	const [isLoading, setIsLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 
@@ -9,7 +11,7 @@ const Home = () => {
 		const localLayout = localStorage.getItem('layout')
 		if (localLayout) {
 			console.log('localLayout: ', localLayout)
-			setLayout(+localLayout)
+			setNewLayout(+localLayout)
 			return setIsLoading(false)
 		}
 		const fetchLayout = async () => {
@@ -20,7 +22,7 @@ const Home = () => {
 				}
 				const newLayout = await response.json()
 				localStorage.setItem('layout', newLayout.layout)
-				setLayout(newLayout.layout)
+				setNewLayout(newLayout.layout)
 				console.log('newLayout: ', newLayout)
 			} catch (error) {
 				setError(error instanceof Error ? error.message : 'Unknown error')
@@ -39,7 +41,9 @@ const Home = () => {
 				<p>Error: {error}</p>
 			) : (
 				<>
-					<h1>Layout: {layout} Home</h1>
+					<h1>Home</h1>
+					<h2>LocalStorage Layout: {newLayout} </h2>
+					<h2>Context Layout: {layout}</h2>
 				</>
 			)}
 		</div>
